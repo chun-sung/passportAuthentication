@@ -1,0 +1,114 @@
+<!--우측 상단 헤더 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <!-- <h2>게시글 정보관리</h2> -->
+        <ol class="breadcrumb mt-3">
+            <li>
+                <a href="/Home/Index">Home ></a>
+            </li>
+            <li>
+                <a>Login</a>
+            </li>
+            <li class="active">
+                <!-- <strong>조회</strong> -->
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <h1>로그인 페이지</h1>
+                            <!-- <form action="/login" method="POST"> -->
+                            <input
+                                id="user_id"
+                                onkeypress="javascript:if(event.keyCode==13) { fn() }"
+                                type="text"
+                                name="user_id"
+                                placeholder="ID"
+                            />
+                            아이디<br />
+                            <input
+                                id="password"
+                                onkeypress="javascript:if(event.keyCode==13) { fn() }"
+                                class="mt-2"
+                                type="password"
+                                name="password"
+                                placeholder="PASSWORD"
+                            />
+                            패스워드<br />
+
+                            <input
+                                id="loginBtn"
+                                class="btn btn-info mt-5"
+                                type="button"
+                                value="로그인"
+                            />
+                            <a class="btn btn-danger mt-5" href="/">취소</a>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    "use strict";
+    // input 에서 엔터 클릭 로직
+    function fn() {
+        let user_id = document.querySelector("#user_id").value;
+        let password = document.querySelector("#password").value;
+
+        if (user_id == "") {
+            alert("아이디를 입력해 주세요");
+            document.querySelector("#user_id").focus();
+            return;
+        } else if (password == "") {
+            alert("비밀번호를 입력해 주세요");
+            document.querySelector("#password").focus();
+            return;
+        }
+
+        ajax(user_id, password);
+    }
+
+    // 로그인 버튼 클릭 로직
+    let btn = document.querySelector("#loginBtn");
+    btn.addEventListener("click", function () {
+        let user_id = document.querySelector("#user_id").value;
+        let password = document.querySelector("#password").value;
+        if (user_id == "") {
+            alert("아이디를 입력해 주세요");
+            document.querySelector("#user_id").focus();
+            return;
+        } else if (password == "") {
+            alert("비밀번호를 입력해 주세요");
+            document.querySelector("#password").focus();
+            return;
+        }
+        ajax(user_id, password);
+    });
+
+    function ajax(user_id, password) {
+        // let member = { user_id, password };
+        axios.post("/login2", { user_id, password }).then((res) => {
+            if (res.data.msg == "성공") {
+                console.log(res.data.msg);
+                alert(`로그인 ${res.data.msg}`);
+                location.href = "/boards/list";
+            } else {
+                alert(`로그인 ${res.data.msg}`);
+                document.querySelector("#password").focus();
+            }
+        });
+    }
+</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>

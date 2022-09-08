@@ -1,0 +1,151 @@
+<!--우측 상단 헤더 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <!-- <h2>게시글 정보관리</h2> -->
+        <ol class="breadcrumb mt-3">
+            <li>
+                <a href="/Home/Index">Home ></a>
+            </li>
+            <li>
+                <a>modify</a>
+            </li>
+            <li class="active">
+                <!-- <strong>조회</strong> -->
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<!--우측 콘텐츠 영역 -->
+<div class="wrapper wrapper-content">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form id="createform" action="/boards/update" method="post">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">제목</label>
+                        <input
+                            type="text"
+                            name="title"
+                            id="title"
+                            class="form-control"
+                            value="<%= article.title %>"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">내용</label>
+                        <textarea
+                            name="contents"
+                            id="contents"
+                            class="form-control"
+                            rows="10"
+                            cols="5"
+                        ><%= article.contents %></textarea
+                        >
+                    </div>
+                </div>
+                <input
+                    type="hidden"
+                    name="article_idx"
+                    value="<%= article.article_idx%>"
+                />
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">사용여부</label>
+                        <div class="form-group">
+                            <select
+                                id="display"
+                                name="display"
+                                class="form-control"
+                            >
+                                <option value="Y">게시함</option>
+                                <option value="N">게시안함</option>
+                                <input
+                                    id="dsp"
+                                    type="hidden"
+                                    value="<%= article.display_yn%>"
+                                />
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">수정</button>
+                <a href="/boards/list" class="btn btn-info">목록</a>
+                <button
+                    type="button"
+                    onclick="fnDelete()"
+                    class="btn btn-danger"
+                >
+                    삭제
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    "use strict";
+    //html요소가 웹브라우저에 모두 렌더링 완료되면 실행되는 메소드ready()
+    $(document).ready(function () {
+        console.log("페이지가 모두 로딩되었습니다.");
+
+        // 게시여부 적용
+        let dsp = $("#dsp").val();
+        $("#display").val(dsp);
+    });
+
+    //서버로 전달하기전에 입력값 유효성 검사 처리하기
+    $("#createform").submit(function () {
+        if ($("#title").val() == "") {
+            alert("제목을 입력해주세요.");
+            $("#title").focus();
+            return false;
+        }
+
+        if ($("#contents").val() == "") {
+            alert("내용을 입력해주세요.");
+            $("#contents").focus();
+            return false;
+        }
+
+        //서버로 입력 데이터를 전송합니다.
+        return true;
+    });
+
+    function getQueryString(keyName) {
+        //자바스크립트 정규식을 이용해 현재페이지 URL에서 전달받은 키값에 대한 쿼리스트링 값을 추출한다.
+        var results = new RegExp("[\?&]" + keyName + "=([^&#]*)").exec(
+            window.location.href
+        );
+        return results[1] || 0;
+    }
+    var articleIdx = getQueryString("idx");
+
+    function fnDelete() {
+        if (confirm("삭제하시겠습니까?")) {
+            //확인버튼을 클릭한경우 데이터를 삭제처리한다.
+
+            //삭제하는 백엔드 RESTAPI(OPEN API)주소를 호출한다.
+            $.get("/boards/delete?idx=" + articleIdx, function (result) {
+                console.log("서버에서 삭제후 전달된 결과메시지: ", result);
+                //{result: 'OK', code: 200, data: '1 건이 삭제되었습니다.'}
+                alert(
+                    `해당 게시글이 삭제 되었습니다.  (게시글 번호: ${articleIdx})`
+                );
+                location.href = "/boards/list";
+            });
+        } else {
+            alert("삭제를 취소하셨습니다.");
+        }
+    }
+</script>

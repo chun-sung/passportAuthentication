@@ -1,0 +1,122 @@
+<!--우측 상단 헤더 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <!-- <h2>게시글 정보관리</h2> -->
+        <ol class="breadcrumb mt-3">
+            <li>
+                <a href="/Home/Index">Home > </a>
+            </li>
+            <li>
+                <a> membership</a>
+            </li>
+            <li class="active">
+                <!-- <strong>조회</strong> -->
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <h1>회원가입 페이지</h1>
+
+                            <!-- <form action="/memberShip" method="POST"> -->
+                            <input
+                                id="user_id"
+                                type="text"
+                                name="user_id"
+                                placeholder="ID"
+                                required
+                            />
+                            아이디<br />
+                            <input
+                                class="mt-2 psword"
+                                type="password"
+                                name="psword"
+                                placeholder="PASSWORD"
+                                required
+                            />
+                            패스워드<br />
+                            <input
+                                class="mt-2 psword2"
+                                type="password"
+                                name="psword2"
+                                placeholder="PASSWORD"
+                                required
+                            />
+                            패스워드 확인<br />
+                            <input
+                                id="nickName"
+                                class="mt-2"
+                                type="text"
+                                name="nickName"
+                                placeholder="NICKNAME"
+                                required
+                            />
+                            사용할 닉네임<br /><br />
+                            <input
+                                id="submit"
+                                class="btn btn-info mt-3"
+                                type="submit"
+                                value="가입"
+                            />
+                            <a class="btn btn-danger mt-3" href="/">취소</a>
+                            <!-- </form>       -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    "use strict";
+    let btn = document.querySelector("#submit");
+    btn.addEventListener("click", function (e) {
+        let user_id = document.querySelector("#user_id").value;
+        let psword = document.querySelector(".psword").value;
+        let psword2 = document.querySelector(".psword2").value;
+        let nickName = document.querySelector("#nickName").value;
+
+        if (psword !== psword2) {
+            alert("비밀번호가 일치하지 않습니다.");
+            // e.preventDefault()
+            return;
+        } else {
+            ajax(user_id, psword, nickName);
+        }
+
+        // alert('회원가입되었습니다. 로그인해 주세요')
+        // location.href = 'http://localhost:3000/login'
+    });
+
+    function ajax(user_id, psword, nickName) {
+        let member = { user_id, psword, nickName };
+        axios.post("/memberShip", { member }).then((res) => {
+            if (res.data.msg == "성공") {
+                console.log(res.data.msg);
+                alert("회원가입이 완료되었습니다.");
+                location.href = "/login";
+            } else if (res.data.msg == "ID") {
+                alert("아이디는 최소 5자 이상이어야 합니다.");
+            } else if (res.data.msg == "PW") {
+                alert("비밀번호는 최소 5자 이상이어야 합니다.");
+            } else if (res.data.msg == "nickName") {
+                alert("닉네임은 최소 2자 이상이어야 합니다.");
+            } else {
+                alert("이미 사용중인 아이디 입니다.");
+                document.querySelector("#user_id").focus();
+            }
+        });
+    }
+</script>
+<!-- user_id
+password
+nickName -->

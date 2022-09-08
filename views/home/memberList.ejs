@@ -1,0 +1,91 @@
+<!--우측 상단 헤더 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <!-- <h2>게시글 정보관리</h2> -->
+        <ol class="breadcrumb mt-3">
+            <li>
+                <a href="/Home/Index">Home > </a>
+            </li>
+            <li>
+                <a>member list</a>
+            </li>
+            <li class="active">
+                <!-- <strong>조회</strong> -->
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="ibox-content m-b-sm border-bottom">
+        <h1>회원 관리 페이지</h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">순번</th>
+                                        <th width="10%">아이디</th>
+                                        <th width="10%">NickName</th>
+                                        <th width="10%">비밀번호 변경</th>
+                                        <th width="10%">계정삭제</th>
+                                        <!-- <th width="10%">비밀번호</th> -->
+                                        <th width="15%">가입일</th>
+                                        <th width="15%">수정일</th>
+                                        <th width="15%">탈퇴일</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="hoverTblBody">
+                                    <% for(let i = 0; i < memberList.length;
+                                    i++) { %>
+                                    <tr>
+                                        <td>
+                                            <a href="#"
+                                                ><%= memberList[i].member_idx
+                                                %></a
+                                            >
+                                        </td>
+                                        <td>
+                                            <a href="/member/modify?idx=<%= memberList[i].member_idx %>"
+                                                ><%= memberList[i].user_id %></a
+                                            >
+                                        </td>
+                                        <td><%= memberList[i].nickName %></td>
+                                        <td>
+                                            <button class="btn btn-info">
+                                                초기화
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger">
+                                                삭제
+                                            </button>
+                                        </td>
+                                        <!-- <td><%= memberList[i].password %></td> -->
+                                        <td>
+                                            <%= moment(memberList[i].createdAt).format('YYYY.MM.DD HH:mm:ss') %>
+                                        </td>
+                                        <% if(memberList[i].updatedAt) { %>
+                                        <td>
+                                            <%= moment(memberList[i].updatedAt).format('YYYY.MM.DD HH:mm:ss') %>
+                                        </td>
+                                        <% } else { %>
+                                        <td></td>
+                                        <% } %>
+                                        <td></td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

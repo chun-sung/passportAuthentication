@@ -1,0 +1,99 @@
+<!--우측 상단 헤더 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <!-- <h2>게시글 정보관리</h2> -->
+       
+        <ol class="breadcrumb mt-3" style="position: relative;">
+            <li>
+                <a href="/Home/Index">Home > </a>
+            </li>
+            <li class="active">
+                <!-- <strong>조회</strong> -->
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="OrderNo">글제목</label>
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="OrderName">작성자</label>
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="MobileNo">사용여부</label>
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <!-- <button type="button" class="btn btn-primary">조회</button> -->
+            <a href="/boards/list" class="btn btn-success">조회</a>
+            <a href="/boards/create" class="btn btn-info">신규</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="5%">글순번</th>
+                                    <th width="30%">글제목</th>
+                                    <th width="10%">조회수</th>
+                                    <th width="10%">게시여부</th>
+                                    <th width="15%">등록일시</th>
+                                    <th width="15%">수정일시</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="hoverTblBody">
+                                <% for(let i = 0; i < articles.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <a href="#"
+                                            ><%= articles[i].article_idx %></a
+                                        >
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="/boards/modify?idx=<%= articles[i].article_idx %>"
+                                            ><%= articles[i].title %></a
+                                        >
+                                    </td>
+                                    <td><%= articles[i].view_cnt %></td>
+                                    <td><%= articles[i].display_yn %></td>
+                                    <td>
+                                        <%= moment(articles[i].regist_date).format('YYYY.MM.DD HH:mm:ss') %>
+                                    </td>
+                                    <% if(articles[i].modify_date) { %>
+                                    <td>
+                                        <%= moment(articles[i].modify_date).format('YYYY.MM.DD HH:mm:ss') %>
+                                    </td>
+                                    <% } else { %>
+                                    <td></td>
+                                    <% } %>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
